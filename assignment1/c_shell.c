@@ -57,11 +57,11 @@ int getcmd(char *prompt, char *args[], int *background) {
 	return i;
 }
 
-void sigStpHandler(int sig_num) {
-  signal(SIGTSTP, sigStpHandler);
-  printf("Cannot be terminated using Ctrl+Z.\n");
+
+void ctrlCHandler() {
+  signal(SIGINT, ctrlCHandler);
+  printf("Killed process.\n");
   fflush(stdout);
-  continue;
 }
 
 int main(void) {
@@ -69,8 +69,9 @@ int main(void) {
 	int bg, count, pid, fg, jobs, fileRdt;
 	char *home = getenv("HOME");
 
+	signal(SIGTSTP, SIG_IGN);
+
 	while(1) {
-		signal(SIGTSTP, sigStpHandler);
 		bg = fg = jobs = 0;
 		count = getcmd("\n>> ", args, &bg);
 
@@ -106,8 +107,11 @@ int main(void) {
 
 
 		if (pid = fork()) {
+			signal(SIGINT, SIG_IGN);
 			waitpid(0, NULL, 0);
 		} else {
+			signal(SIGINT, ctrlCHandler);
+			sleep(3);
 			// If redirect/append operator found
 			for (int idx = 0; args[idx]; idx++) {
 				if (strcmp(args[idx], ">") == 0 || strcmp(args[idx], ">>") == 0) {
