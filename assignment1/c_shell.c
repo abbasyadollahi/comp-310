@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -17,8 +18,7 @@
 // worry about deallocating memory. You need to ensure memory is allocated and deallocated
 // properly so that your shell works without leaking memory.
 
-int getcmd(char *prompt, char *args[], int *background)
-{
+int getcmd(char *prompt, char *args[], int *background) {
 	// Clear args in memory
 	for (int i = 0; i < MAX_ARGS; i++)
 		args[i] = NULL;
@@ -57,13 +57,20 @@ int getcmd(char *prompt, char *args[], int *background)
 	return i;
 }
 
+void sigStpHandler(int sig_num) {
+  signal(SIGTSTP, sigStpHandler);
+  printf("Cannot be terminated using Ctrl+Z.\n");
+  fflush(stdout);
+  continue;
+}
 
 int main(void) {
-	char *redirectTo;
 	char *args[MAX_ARGS];
 	int bg, count, pid, fg, jobs, fileRdt;
+	char *home = getenv("HOME");
 
 	while(1) {
+		signal(SIGTSTP, sigStpHandler);
 		bg = fg = jobs = 0;
 		count = getcmd("\n>> ", args, &bg);
 
@@ -71,8 +78,26 @@ int main(void) {
 		if (count <= 0)
 			continue;
 
+		// Kernel can't interpret ~
+		for (int idx = 0; args[idx]; idx++) {
+			if (strchr(args[idx], 126)) {
+				char* replaced;
+				char* copy = args[idx];
+				int len = strlen(copy);
+				memmove(&copy[0], &copy[1], len);
+
+				if ((replaced = malloc(len + strlen(home) + 1)) != NULL) {
+					replaced[0] = '\0';
+					strcat(strcat(replaced, home), copy);
+					args[idx] = replaced;
+				} else {
+					fprintf(stderr, "Memory allocation failed for ~.\n");
+					continue;
+				}
+			}
+		}
+
 		if (strcmp(args[0], "cd") == 0) {
-			// If args[1] == ~, find home dir
 			chdir(args[1]);
 			continue;
 		} else if (strcmp(args[0], "exit") == 0) {
@@ -83,13 +108,18 @@ int main(void) {
 		if (pid = fork()) {
 			waitpid(0, NULL, 0);
 		} else {
+			// If redirect/append operator found
 			for (int idx = 0; args[idx]; idx++) {
-				if (strcmp(args[idx], ">") == 0) {
-					redirectTo = args[idx+1];
-					args[idx] = args[idx+1] = NULL;
-
+				if (strcmp(args[idx], ">") == 0 || strcmp(args[idx], ">>") == 0) {
+					int flag = O_TRUNC;
+					char *redirectTo = args[idx+1];
 					close(1);
-					fileRdt = open(redirectTo, O_WRONLY | O_CREAT, 0755);
+
+					if (strcmp(args[idx], ">>") == 0)
+						flag = O_APPEND;
+
+					open(redirectTo, O_WRONLY | O_CREAT | flag, 0755);
+					args[idx] = args[idx+1] = NULL;
 				}
 			}
 
@@ -101,12 +131,12 @@ int main(void) {
 				execvp(args[0], args);
 
 				// Reset stdout after redirection was used
-				if (redirectTo) {
-					close(fileRdt);
-					dup2(STD_OUT, 1);
-					close(STD_OUT);
-					redirectTo = NULL;
-				}
+				// if (redirectTo) {
+				// 	close(fileRdt);
+				// 	dup2(STD_OUT, 1);
+				// 	close(STD_OUT);
+				// 	redirectTo = NULL;
+				// }
 			}
 		}
 
