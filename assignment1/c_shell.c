@@ -57,11 +57,12 @@ int getcmd(char *prompt, char *args[], int *background) {
 	return i;
 }
 
-
+// Kill child process with ctrl+c
 void ctrlCHandler() {
   signal(SIGINT, ctrlCHandler);
   printf("Killed process.\n");
   fflush(stdout);
+  exit(-1);
 }
 
 int main(void) {
@@ -69,6 +70,7 @@ int main(void) {
 	int bg, count, pid, fg, jobs, fileRdt;
 	char *home = getenv("HOME");
 
+	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 
 	while(1) {
@@ -78,6 +80,10 @@ int main(void) {
 		// Skip if command line was empty
 		if (count <= 0)
 			continue;
+
+		// Exit C shell
+		if (strcmp(args[0], "exit") == 0)
+			exit(-1);
 
 		// Kernel can't interpret ~
 		for (int idx = 0; args[idx]; idx++) {
@@ -98,21 +104,20 @@ int main(void) {
 			}
 		}
 
+		// Change directory and restart loop
 		if (strcmp(args[0], "cd") == 0) {
 			chdir(args[1]);
 			continue;
-		} else if (strcmp(args[0], "exit") == 0) {
-			exit(-1);
 		}
 
 
 		if (pid = fork()) {
-			signal(SIGINT, SIG_IGN);
 			waitpid(0, NULL, 0);
 		} else {
 			signal(SIGINT, ctrlCHandler);
 			sleep(3);
-			// If redirect/append operator found
+
+			// Change stdout if redirect/append operator found
 			for (int idx = 0; args[idx]; idx++) {
 				if (strcmp(args[idx], ">") == 0 || strcmp(args[idx], ">>") == 0) {
 					int flag = O_TRUNC;
