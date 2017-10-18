@@ -12,7 +12,7 @@
 #define MAX_HIST 10
 #define STD_OUT dup(2)
 #define loopProcess(item, prev, head) \
-	for(item = head; item != NULL; prev = item, item = item->next)
+				for(item = head; item != NULL; prev = item, item = item->next)
 
 
 struct process *headJob = NULL;
@@ -29,12 +29,12 @@ struct process {
 
 // Reset memory
 void resetMemory() {
-  struct process *current = headJob;
-  while (current != NULL) {
-    struct process *job = current;
-    current = current->next;
-    free(job);
-  }
+	struct process *current = headJob;
+	while (current != NULL) {
+		struct process *job = current;
+		current = current->next;
+		free(job);
+	}
 }
 
 
@@ -87,13 +87,13 @@ int getcmd(char *prompt, char *args[], int *background, char *line[]) {
 	}
 
 	// Create copy of command line
-  char *lineCopy = malloc(strlen(line[0]) + 1);
-  if (lineCopy)
-    strcpy(lineCopy, line[0]);
-  else
- 	  fprintf(stderr, "Memory allocation failure!");
+	char *lineCopy = malloc(strlen(line[0]) + 1);
+	if (lineCopy)
+		strcpy(lineCopy, line[0]);
+	else
+		fprintf(stderr, "Memory allocation failure!");
 
- 	// Remove non characters and store in args
+	// Remove non characters and store in args
 	while ((token = strsep(&lineCopy, " \t\n")) != NULL) {
 		for (int j = 0; j < strlen(token); j++)
 			if (token[j] <= 32)
@@ -204,17 +204,17 @@ int executeJobs() {
 
 // Bring a background process to foreground
 void executeFg(char *args[]) {
-  int jobNum = atoi(args[1]);
+	int jobNum = atoi(args[1]);
 
-  struct process *prev = NULL;
-  struct process *current = NULL;
+	struct process *prev = NULL;
+	struct process *current = NULL;
 
-  loopProcess(current, prev, headJob) {
-  	if (current->number == jobNum) {
-  		kill(current->pid, SIGCONT);
-  		waitpid(current->pid, NULL, WUNTRACED);
-  	}
-  }
+	loopProcess(current, prev, headJob) {
+		if (current->number == jobNum) {
+			kill(current->pid, SIGCONT);
+			waitpid(current->pid, NULL, WUNTRACED);
+		}
+	}
 }
 
 
@@ -275,7 +275,6 @@ int main(void) {
 		// Main execuction statement
 		if ((pid = fork()) > 0) { // Parent
 			if (bg == 0) {
-				printf("%d\n", pid);
 				waitpid(pid, NULL, WUNTRACED);
 			}
 			else {
