@@ -91,7 +91,7 @@ int getcmd(char *prompt, char *args[], int *background, char *line[]) {
 	if (lineCopy)
 		strcpy(lineCopy, line[0]);
 	else
-		fprintf(stderr, "Memory allocation failure!");
+		fprintf(stderr, "Memory allocation failure.\n");
 
 	// Remove non characters and store in args
 	while ((token = strsep(&lineCopy, " \t\n")) != NULL) {

@@ -1,0 +1,5 @@
+init
+reserve Amro A 111
+reserve Mathew B 210
+status
+exit
