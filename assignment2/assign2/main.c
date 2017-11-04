@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <string.h>
 #include <pthread.h>
 #include <sys/shm.h>
@@ -57,7 +58,7 @@ void initTables(struct table *base) {
 
     printf("Initialization successful.\n");
     // Perform a random sleep
-    sleep(rand() % 3);
+    sleep(rand() % 10);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -93,7 +94,7 @@ void printTableInfo(struct table *base) {
     }
 
     // Perform a random sleep
-    sleep(rand() % 3);
+    sleep(rand() % 10);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -121,15 +122,15 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
 
             // Reserve table for the name specified if free
             i = table_num - 100;
-
-            if (strcmp((base+i)->name, "Free") == 0) {
+            if (strcmp((base+i)->status, "Free") == 0) {
                 strcpy((base+i)->name, name_hld);
                 strcpy((base+i)->status, "Reserved");
                 printf("Reservation successful.\n");
                 printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
             } else {
-                printf("Reservation failed: Table %d is already reserved.\n", table_num);
+                printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
             }
+            sleep(rand() % 15);
 
             // Release mutex
             sem_post(mutexA);
@@ -149,20 +150,20 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
             // Reserve table for the name specified if free
             i = table_num - 190;
 
-            if (strcmp((base+i)->name, "Free") == 0) {
+            if (strcmp((base+i)->status, "Free") == 0) {
                 strcpy((base+i)->name, name_hld);
                 strcpy((base+i)->status, "Reserved");
                 printf("Reservation successful.\n");
                 printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
             } else {
-                printf("Reservation failed: Table %d is already reserved.\n", table_num);
+                printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
             }
 
             // Release mutex
             sem_post(mutexB);
             break;
         default:
-            printf("Reservation failed: Section %c does not exist.", section[0]);
+            printf("Reservation failed: Section %s does not exist.", section);
             break;
     }
     return;
@@ -226,7 +227,7 @@ void reserveRandomTable(struct table *base, char *name_hld, char *section) {
             sem_post(mutexB);
             break;
         default:
-            printf("Reservation failed: Section %c does not exist.", section[0]);
+            printf("Reservation failed: Section %s does not exist.", section);
             break;
     }
     return;
@@ -267,7 +268,7 @@ int processCmd(char *cmd, struct table *base) {
             else
                 reserveRandomTable(base, name_hld, section);
 
-            sleep(rand() % 3);
+            sleep(rand() % 10);
             break;
         case 's':
         case 'S':
@@ -285,9 +286,24 @@ int processCmd(char *cmd, struct table *base) {
 }
 
 
+// Clear all semaphores on Ctrl+C
+void ctrlCHandler() {
+    signal(SIGINT, ctrlCHandler);
+    printf("Killed process.\n");
+    sem_post(mutexA);
+    sem_post(mutexB);
+    sem_close(mutexA);
+    sem_close(mutexB);
+    fflush(stdout);
+    exit(-1);
+}
+
+
 int main(int argc, char *argv[]) {
     int fd_stdin = STDIN_FILENO;
     int mem_size = sizeof(struct table) * BUFF_SIZE;
+
+    signal(SIGINT, ctrlCHandler);
 
     // File name is specifed
     if (argc > 1) {
@@ -305,8 +321,14 @@ int main(int argc, char *argv[]) {
     mutexA = sem_open(BUFF_MUTEX_A, O_CREAT, S_IRWXU, 1);
     mutexB = sem_open(BUFF_MUTEX_B, O_CREAT, S_IRWXU, 1);
 
+    if (mutexA == (void *)-1 || mutexB == (void *)-1) {
+        printf("Semaphore failed: %s.\n", strerror(errno));
+        exit(-1);
+    }
+
     // Opening the shared memory buffer ie BUFF_SHM using shm open
     shm_fd = shm_open(BUFF_SHM, O_CREAT | O_RDWR, S_IRWXU);
+
     if (shm_fd == -1) {
         printf("Shared memory failed: %s.\n", strerror(errno));
         exit(-1);
@@ -317,6 +339,7 @@ int main(int argc, char *argv[]) {
 
     // Map this shared memory to kernel space
     base = mmap(NULL , mem_size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+
     if (base == MAP_FAILED) {
         // Close and shm_unlink
         printf("Memory map failed: %s.\n", strerror(errno));
@@ -327,7 +350,7 @@ int main(int argc, char *argv[]) {
     // Create the table database if empty
     createTableDB(base);
 
-    // Intialising random number generator
+    // Initializing random number generator
     time_t now;
     srand((unsigned int)(time(&now)));
 
@@ -339,11 +362,12 @@ int main(int argc, char *argv[]) {
     while (retStatus) {
         printf("\n>> ");
         fgets(cmd, sizeof(cmd), stdin);
-        cmd[sizeof(cmd) - 1] = '\0';
+        // cmd[strcspn(cmd, "\r\n")] = 0;
+        // cmd[sizeof(cmd) - 1] = '\0';
         strtok(cmd, "\n");
 
         if (argc > 1)
-            printf("Executing Command: %s\n", cmd);
+            printf("Executing command: %s\n", cmd);
 
         retStatus = processCmd(cmd, base);
     }

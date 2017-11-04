@@ -23,8 +23,8 @@
 #define BUFF_MUTEX_B "/OS_MUTEX_B_ABBAS"
 
 int main() {
-    printf("Starting to clear namespaces\n");
-    // Clearing buffer namespace
+    printf("Starting to clear namespaces.\n");
+    // Clear buffer namespace
 
     // Unlink shm
     shm_unlink(BUFF_SHM);
@@ -33,6 +33,6 @@ int main() {
     sem_unlink(BUFF_MUTEX_A);
     sem_unlink(BUFF_MUTEX_B);
 
-    printf("Cleared namespaces\n");
+    printf("Cleared namespaces.\n");
     return 0;
 }
