@@ -12,7 +12,7 @@
 #define MAX_HIST 10
 #define STD_OUT dup(2)
 #define loopProcess(item, prev, head) \
-				for(item = head; item != NULL; prev = item, item = item->next)
+		for(item = head; item != NULL; prev = item, item = item->next)
 
 
 struct process *headJob = NULL;
@@ -20,9 +20,9 @@ struct process *currentJob = NULL;
 
 
 struct process {
-	int number;						// The job number
-	int pid;							// The process id of the specific process
-	char *command;				// The command used to create the process
+	int number;				// The job number
+	int pid;				// The process id of the specific process
+	char *command;			// The command used to create the process
 	struct process *next;	// When another process is called you add to the end of the linked list
 };
 
