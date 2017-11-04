@@ -1,5 +1,5 @@
 #!/bin/bash
 
-gcc main.c -o ass -pthread -lrt
+gcc -g -std=c99 main.c -o ass -pthread -lrt
 
-gcc clearout.c -o clear -pthread -lrt
+gcc -g -std=c99 clearout.c -o clear -pthread -lrt
