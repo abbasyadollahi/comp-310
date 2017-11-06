@@ -19,7 +19,7 @@
 #include <sys/types.h>
 #include <semaphore.h>
 
-#define MAX_ARGS 20
+#define MAX_ARGS 100
 #define BUFF_SIZE 20
 #define BUFF_SHM "OS_BUFF_SHM_ABBAS"
 #define BUFF_MUTEX_A "/OS_MUTEX_A_ABBAS"
@@ -356,15 +356,14 @@ int main(int argc, char *argv[]) {
 
     // Array in which the user command is held
     char cmd[MAX_ARGS];
-    int cmdType;
     int retStatus = 1;
 
     while (retStatus) {
         printf("\n>> ");
         fgets(cmd, sizeof(cmd), stdin);
         // cmd[strcspn(cmd, "\r\n")] = 0;
-        // cmd[sizeof(cmd) - 1] = '\0';
-        strtok(cmd, "\n");
+        cmd[sizeof(cmd) - 1] = '\0';
+        // strtok(cmd, "\n");
 
         if (argc > 1)
             printf("Executing command: %s\n", cmd);
