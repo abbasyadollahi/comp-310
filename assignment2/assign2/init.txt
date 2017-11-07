@@ -1,7 +1,14 @@
 init
 reserve Amro A 111
-reserve AbbAs a 100
-reserve AbbAs b 100
+reserve Tony a 100
 reserve Mathew B 210
+r Abbas b 100
 status
+reserve Boi BB 206
+res AbdullahAbuButata A
+res AbdullahAbuButata B
+status
+init Yo B 101
+status
+res Ham B 206
 exit

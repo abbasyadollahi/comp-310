@@ -36,8 +36,8 @@ void *base;
 // Structure for individual table
 struct table {
     int num;
-    char name[10];
-    char status[10];
+    char name[30];
+    char status[30];
 };
 
 
@@ -57,8 +57,9 @@ void initTables(struct table *base) {
     }
 
     printf("Initialization successful.\n");
+
     // Perform a random sleep
-    sleep(rand() % 10);
+    // sleep(rand() % 15);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -94,7 +95,7 @@ void printTableInfo(struct table *base) {
     }
 
     // Perform a random sleep
-    sleep(rand() % 10);
+    // sleep(rand() % 15);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -117,7 +118,7 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
             if (table_num < 100 || table_num > 109) {
                 printf("Reservation failed: Table %d does not exist for section A.\n", table_num);
                 sem_post(mutexA);
-                break;
+                return;
             }
 
             // Reserve table for the name specified if free
@@ -130,7 +131,9 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
             } else {
                 printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
             }
-            sleep(rand() % 15);
+
+            // Perform a random sleep
+            // sleep(rand() % 15);
 
             // Release mutex
             sem_post(mutexA);
@@ -158,6 +161,9 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
             } else {
                 printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
             }
+
+            // Perform a random sleep
+            // sleep(rand() % 15);
 
             // Release mutex
             sem_post(mutexB);
@@ -197,6 +203,9 @@ void reserveRandomTable(struct table *base, char *name_hld, char *section) {
             if (reserved == 0)
                 printf("Reservation failed: All tables are already reserved.\n");
 
+            // Perform a random sleep
+            // sleep(rand() % 15);
+
             // Release mutex for section A
             sem_post(mutexA);
             break;
@@ -222,6 +231,9 @@ void reserveRandomTable(struct table *base, char *name_hld, char *section) {
 
             if (reserved == 0)
                 printf("Reservation failed: All tables are already reserved.\n");
+
+            // Perform a random sleep
+            // sleep(rand() % 15);
 
             // Release mutex for section B
             sem_post(mutexB);
@@ -249,17 +261,17 @@ int processCmd(char *cmd, struct table *base) {
             section = strtok(NULL, " ");
             table_char = strtok(NULL, " ");
 
-
             if (name_hld == NULL) {
-                printf("Command failed: Must give a name for reservation.\n");
+                printf("Command failed: A name is required for reservation.\n");
                 return 1;
             }
 
             if (section == NULL) {
-                printf("Command failed: Must use valid section a/A or b/B.\n");
+                printf("Command failed: A valid section is required for reservation.\n");
                 return 1;
-            } else if (strcmp(section, "A") != 0 && strcmp(section, "a") != 0  && strcmp(section, "B") != 0 && strcmp(section, "b") != 0) {
-                printf("Command failed: Must use valid section A or B.\n");
+            } else if (strcmp(section, "A") != 0 && strcmp(section, "a") != 0  &&
+                       strcmp(section, "B") != 0 && strcmp(section, "b") != 0) {
+                printf("Command failed: Must use valid section a/A or b/B.\n");
                 return 1;
             }
 
@@ -268,7 +280,7 @@ int processCmd(char *cmd, struct table *base) {
             else
                 reserveRandomTable(base, name_hld, section);
 
-            sleep(rand() % 10);
+            sleep(rand() % 15);
             break;
         case 's':
         case 'S':
@@ -361,14 +373,15 @@ int main(int argc, char *argv[]) {
     while (retStatus) {
         printf("\n>> ");
         fgets(cmd, sizeof(cmd), stdin);
-        // cmd[strcspn(cmd, "\r\n")] = 0;
         cmd[sizeof(cmd) - 1] = '\0';
-        // strtok(cmd, "\n");
+        cmd[strcspn(cmd, "\r\n")] = 0;
 
-        if (argc > 1)
-            printf("Executing command: %s\n", cmd);
+        if (cmd[0] != '\0') {
+            if (argc > 1)
+                printf("Executing command: %s\n", cmd);
 
-        retStatus = processCmd(cmd, base);
+            retStatus = processCmd(cmd, base);
+        }
     }
 
     // Close the semphores

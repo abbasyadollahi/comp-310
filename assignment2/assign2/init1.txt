@@ -1,0 +1,15 @@
+init
+reserve person1 B
+reserve person2 B
+reserve person3 B
+reserve person4 B
+reserve person5 B
+reserve person6 B
+reserve person7 B
+reserve person8 B
+reserve person9 B
+reserve person10 B
+status
+status
+reserve seatsFull B
+exit
