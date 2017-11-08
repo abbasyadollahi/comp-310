@@ -21,11 +21,11 @@ Table 203 B: personB3
 
 ----- Section A -----
 Table 100 -- TonyA0
-Table 101 -- MyGuyA1
+Table 101 --
 Table 102 --
 Table 103 --
 Table 104 --
-Table 105 -- AbbasA5
+Table 105 --
 Table 106 --
 Table 107 --
 Table 108 --
@@ -36,7 +36,7 @@ Table 200 -- personB0
 Table 201 -- personB1
 Table 202 -- personB2
 Table 203 -- personB3
-Table 204 -- MyDudeB0
+Table 204 --
 Table 205 --
 Table 206 --
 Table 207 --
@@ -45,7 +45,7 @@ Table 209 --
 
 >> Executing command: reserve personB4 B
 Reservation successful.
-Table 205 B: personB4
+Table 204 B: personB4
 
 >> Executing command: reserve personB5 B
 Reservation successful.
@@ -59,7 +59,7 @@ Table 101 -- MyGuyA1
 Table 102 --
 Table 103 --
 Table 104 --
-Table 105 -- AbbasA5
+Table 105 --
 Table 106 --
 Table 107 --
 Table 108 --
@@ -70,8 +70,8 @@ Table 200 -- personB0
 Table 201 -- personB1
 Table 202 -- personB2
 Table 203 -- personB3
-Table 204 -- MyDudeB0
-Table 205 -- personB4
+Table 204 -- personB4
+Table 205 -- MyDudeB0
 Table 206 -- personB5
 Table 207 --
 Table 208 --
@@ -102,7 +102,7 @@ Table 102 A: personRand
 Table 100 -- TonyA0
 Table 101 -- MyGuyA1
 Table 102 -- personRand
-Table 103 -- AbdullahA2
+Table 103 --
 Table 104 --
 Table 105 -- AbbasA5
 Table 106 --
@@ -115,21 +115,19 @@ Table 200 -- personB0
 Table 201 -- personB1
 Table 202 -- personB2
 Table 203 -- personB3
-Table 204 -- MyDudeB0
-Table 205 -- personB4
+Table 204 -- personB4
+Table 205 -- MyDudeB0
 Table 206 -- personB5
-Table 207 -- AbuB1
+Table 207 --
 Table 208 --
 Table 209 --
 
 >>
 >> Executing command: reserve personA2 A 102
-Reservation successful.
-Table 102 A: personA2
+Reservation failed: Table 102 A already reserved by personRand.
 
 >> Executing command: reserve personA3 A 103
-Reservation successful.
-Table 103 A: personA3
+Reservation failed: Table 103 A already reserved by AbdullahA2.
 
 >> Executing command: reserve personA4 A 104
 Reservation successful.
@@ -137,15 +135,13 @@ Table 104 A: personA4
 
 >> Executing command: reserve personRand A
 Reservation successful.
-Table 100 A: personRand
+Table 106 A: personRand
 
 >> Executing command: reserve tableTaken A 105
-Reservation successful.
-Table 105 A: tableTaken
+Reservation failed: Table 105 A already reserved by AbbasA5.
 
 >> Executing command: reserve personA6 A 106
-Reservation successful.
-Table 106 A: personA6
+Reservation failed: Table 106 A already reserved by personRand.
 
 >> Executing command: reserve personA7 A 107
 Reservation successful.
@@ -169,14 +165,14 @@ Table 101 A: sectionFull
 >> Executing command: status
 
 ----- Section A -----
-Table 100 -- personRand
+Table 100 -- comp310A0
 Table 101 -- sectionFull
-Table 102 -- personA2
-Table 103 -- personA3
-Table 104 -- personA4
-Table 105 -- tableTaken
-Table 106 -- personA6
-Table 107 -- personA7
+Table 102 --
+Table 103 --
+Table 104 --
+Table 105 --
+Table 106 --
+Table 107 --
 Table 108 -- personA8
 Table 109 -- person9
 

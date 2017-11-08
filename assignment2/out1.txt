@@ -16,7 +16,7 @@ Table 101 A: MyGuyA1
 
 >> Executing command: reserve MyDudeB0 B
 Reservation successful.
-Table 204 B: MyDudeB0
+Table 205 B: MyDudeB0
 
 >> Executing command: reserve Abbas b 104
 Reservation failed: Table 104 does not exist for section B.
@@ -33,7 +33,7 @@ Reservation failed: Table 200 B already reserved by personB0.
 ----- Section A -----
 Table 100 -- TonyA0
 Table 101 -- MyGuyA1
-Table 102 -- personRand
+Table 102 -- 
 Table 103 -- 
 Table 104 -- 
 Table 105 -- AbbasA5
@@ -47,8 +47,8 @@ Table 200 -- personB0
 Table 201 -- personB1
 Table 202 -- personB2
 Table 203 -- personB3
-Table 204 -- MyDudeB0
-Table 205 -- personB4
+Table 204 -- personB4
+Table 205 -- MyDudeB0
 Table 206 -- personB5
 Table 207 -- 
 Table 208 -- 
@@ -77,10 +77,10 @@ Table 100 -- TonyA0
 Table 101 -- MyGuyA1
 Table 102 -- personRand
 Table 103 -- AbdullahA2
-Table 104 -- 
+Table 104 -- personA4
 Table 105 -- AbbasA5
-Table 106 -- 
-Table 107 -- 
+Table 106 -- personRand
+Table 107 -- personA7
 Table 108 -- 
 Table 109 -- 
 
@@ -89,8 +89,8 @@ Table 200 -- personB0
 Table 201 -- personB1
 Table 202 -- personB2
 Table 203 -- personB3
-Table 204 -- MyDudeB0
-Table 205 -- personB4
+Table 204 -- personB4
+Table 205 -- MyDudeB0
 Table 206 -- personB5
 Table 207 -- AbuB1
 Table 208 -- 
@@ -104,13 +104,13 @@ Initialization successful.
 ----- Section A -----
 Table 100 -- 
 Table 101 -- 
-Table 102 -- personA2
-Table 103 -- personA3
-Table 104 -- personA4
+Table 102 -- 
+Table 103 -- 
+Table 104 -- 
 Table 105 -- 
 Table 106 -- 
 Table 107 -- 
-Table 108 -- 
+Table 108 -- personA8
 Table 109 -- 
 
 ----- Section B -----
@@ -139,14 +139,14 @@ Table 200 B: FamB0
 >> Executing command: status
 
 ----- Section A -----
-Table 100 -- personRand
-Table 101 -- sectionFull
-Table 102 -- personA2
-Table 103 -- personA3
-Table 104 -- personA4
-Table 105 -- tableTaken
-Table 106 -- personA6
-Table 107 -- personA7
+Table 100 -- 
+Table 101 -- 
+Table 102 -- 
+Table 103 -- 
+Table 104 -- 
+Table 105 -- 
+Table 106 -- 
+Table 107 -- 
 Table 108 -- personA8
 Table 109 -- person9
 
@@ -163,6 +163,7 @@ Table 208 --
 Table 209 -- 
 
 >> Executing command: reserve comp310A0 A
-Reservation failed: All tables are already reserved.
+Reservation successful.
+Table 100 A: comp310A0
 
 >> Executing command: exit
