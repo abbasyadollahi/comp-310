@@ -1,0 +1,168 @@
+Initialization successful.
+
+>> Executing command: reserve Amro A 111
+Reservation failed: Table 111 does not exist for section A.
+
+>> Executing command: reserve TonyA0 a 100
+Reservation successful.
+Table 100 A: TonyA0
+
+>> Executing command: reserve Mathew B 210
+Reservation failed: Table 210 does not exist for section B.
+
+>> Executing command: reserve MyGuyA1 A
+Reservation successful.
+Table 101 A: MyGuyA1
+
+>> Executing command: reserve MyDudeB0 B
+Reservation successful.
+Table 204 B: MyDudeB0
+
+>> Executing command: reserve Abbas b 104
+Reservation failed: Table 104 does not exist for section B.
+
+>> Executing command: reserve AbbasA5 A 105
+Reservation successful.
+Table 105 A: AbbasA5
+
+>> Executing command: reserve Lemao B 200
+Reservation failed: Table 200 B already reserved by personB0.
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- TonyA0
+Table 101 -- MyGuyA1
+Table 102 -- personRand
+Table 103 -- 
+Table 104 -- 
+Table 105 -- AbbasA5
+Table 106 -- 
+Table 107 -- 
+Table 108 -- 
+Table 109 -- 
+
+----- Section B -----
+Table 200 -- personB0
+Table 201 -- personB1
+Table 202 -- personB2
+Table 203 -- personB3
+Table 204 -- MyDudeB0
+Table 205 -- personB4
+Table 206 -- personB5
+Table 207 -- 
+Table 208 -- 
+Table 209 -- 
+
+>> 
+>> 
+>> Executing command: reserve Boi BB 206
+Command failed: Must use valid section a/A or b/B.
+
+>> Executing command: reserve AbdullahA2 A
+Reservation successful.
+Table 103 A: AbdullahA2
+
+>> Executing command: reserve AbuB1 B
+Reservation successful.
+Table 207 B: AbuB1
+
+>> Executing command: reserve ButataB2 B 202
+Reservation failed: Table 202 B already reserved by personB2.
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- TonyA0
+Table 101 -- MyGuyA1
+Table 102 -- personRand
+Table 103 -- AbdullahA2
+Table 104 -- 
+Table 105 -- AbbasA5
+Table 106 -- 
+Table 107 -- 
+Table 108 -- 
+Table 109 -- 
+
+----- Section B -----
+Table 200 -- personB0
+Table 201 -- personB1
+Table 202 -- personB2
+Table 203 -- personB3
+Table 204 -- MyDudeB0
+Table 205 -- personB4
+Table 206 -- personB5
+Table 207 -- AbuB1
+Table 208 -- 
+Table 209 -- 
+
+>> Executing command: init
+Initialization successful.
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- 
+Table 101 -- 
+Table 102 -- personA2
+Table 103 -- personA3
+Table 104 -- personA4
+Table 105 -- 
+Table 106 -- 
+Table 107 -- 
+Table 108 -- 
+Table 109 -- 
+
+----- Section B -----
+Table 200 -- 
+Table 201 -- 
+Table 202 -- 
+Table 203 -- 
+Table 204 -- 
+Table 205 -- 
+Table 206 -- 
+Table 207 -- 
+Table 208 -- 
+Table 209 -- 
+
+>> Executing command: reserve HamB6 B 206
+Reservation successful.
+Table 206 B: HamB6
+
+>> Executing command: reserve Bam B 206
+Reservation failed: Table 206 B already reserved by HamB6.
+
+>> Executing command: reserve FamB0 B
+Reservation successful.
+Table 200 B: FamB0
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- personRand
+Table 101 -- sectionFull
+Table 102 -- personA2
+Table 103 -- personA3
+Table 104 -- personA4
+Table 105 -- tableTaken
+Table 106 -- personA6
+Table 107 -- personA7
+Table 108 -- personA8
+Table 109 -- person9
+
+----- Section B -----
+Table 200 -- FamB0
+Table 201 -- 
+Table 202 -- 
+Table 203 -- 
+Table 204 -- 
+Table 205 -- 
+Table 206 -- HamB6
+Table 207 -- 
+Table 208 -- 
+Table 209 -- 
+
+>> Executing command: reserve comp310A0 A
+Reservation failed: All tables are already reserved.
+
+>> Executing command: exit

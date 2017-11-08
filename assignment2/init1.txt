@@ -1,0 +1,24 @@
+reserve Amro A 111
+reserve TonyA0 a 100
+reserve Mathew B 210
+reserve MyGuyA1 A
+reserve MyDudeB0 B
+reserve Abbas b 104
+reserve AbbasA5 A 105
+reserve Lemao B 200
+status
+
+
+reserve Boi BB 206
+reserve AbdullahA2 A
+reserve AbuB1 B
+reserve ButataB2 B 202
+status
+init
+status
+reserve HamB6 B 206
+reserve Bam B 206
+reserve FamB0 B
+status
+reserve comp310A0 A
+exit

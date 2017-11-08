@@ -1,0 +1,196 @@
+>> Executing command: init
+Initialization successful.
+
+>> Executing command: reserve personB0 B
+Reservation successful.
+Table 200 B: personB0
+
+>> Executing command: reserve personB1 B
+Reservation successful.
+Table 201 B: personB1
+
+>> Executing command: reserve personB2 B
+Reservation successful.
+Table 202 B: personB2
+
+>> Executing command: reserve personB3 B
+Reservation successful.
+Table 203 B: personB3
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- TonyA0
+Table 101 -- MyGuyA1
+Table 102 --
+Table 103 --
+Table 104 --
+Table 105 -- AbbasA5
+Table 106 --
+Table 107 --
+Table 108 --
+Table 109 --
+
+----- Section B -----
+Table 200 -- personB0
+Table 201 -- personB1
+Table 202 -- personB2
+Table 203 -- personB3
+Table 204 -- MyDudeB0
+Table 205 --
+Table 206 --
+Table 207 --
+Table 208 --
+Table 209 --
+
+>> Executing command: reserve personB4 B
+Reservation successful.
+Table 205 B: personB4
+
+>> Executing command: reserve personB5 B
+Reservation successful.
+Table 206 B: personB5
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- TonyA0
+Table 101 -- MyGuyA1
+Table 102 --
+Table 103 --
+Table 104 --
+Table 105 -- AbbasA5
+Table 106 --
+Table 107 --
+Table 108 --
+Table 109 --
+
+----- Section B -----
+Table 200 -- personB0
+Table 201 -- personB1
+Table 202 -- personB2
+Table 203 -- personB3
+Table 204 -- MyDudeB0
+Table 205 -- personB4
+Table 206 -- personB5
+Table 207 --
+Table 208 --
+Table 209 --
+
+>> Executing command: reserve invalidNum A ###
+Reservation failed: Table 0 does not exist for section A.
+
+>> Executing command: reserve invalidNum A 111
+Reservation failed: Table 111 does not exist for section A.
+
+>> Executing command: reserve invalidSection C
+Command failed: Must use valid section a/A or b/B.
+
+>> Executing command: reserve invalidSection AA 100
+Command failed: Must use valid section a/A or b/B.
+
+>> Executing command: reserve personA1 A 101
+Reservation failed: Table 101 A already reserved by MyGuyA1.
+
+>> Executing command: reserve personRand A
+Reservation successful.
+Table 102 A: personRand
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- TonyA0
+Table 101 -- MyGuyA1
+Table 102 -- personRand
+Table 103 -- AbdullahA2
+Table 104 --
+Table 105 -- AbbasA5
+Table 106 --
+Table 107 --
+Table 108 --
+Table 109 --
+
+----- Section B -----
+Table 200 -- personB0
+Table 201 -- personB1
+Table 202 -- personB2
+Table 203 -- personB3
+Table 204 -- MyDudeB0
+Table 205 -- personB4
+Table 206 -- personB5
+Table 207 -- AbuB1
+Table 208 --
+Table 209 --
+
+>>
+>> Executing command: reserve personA2 A 102
+Reservation successful.
+Table 102 A: personA2
+
+>> Executing command: reserve personA3 A 103
+Reservation successful.
+Table 103 A: personA3
+
+>> Executing command: reserve personA4 A 104
+Reservation successful.
+Table 104 A: personA4
+
+>> Executing command: reserve personRand A
+Reservation successful.
+Table 100 A: personRand
+
+>> Executing command: reserve tableTaken A 105
+Reservation successful.
+Table 105 A: tableTaken
+
+>> Executing command: reserve personA6 A 106
+Reservation successful.
+Table 106 A: personA6
+
+>> Executing command: reserve personA7 A 107
+Reservation successful.
+Table 107 A: personA7
+
+>> Executing command: reserve personA8 A 108
+Reservation successful.
+Table 108 A: personA8
+
+>> Executing command: reserve tableTaken A 108
+Reservation failed: Table 108 A already reserved by personA8.
+
+>> Executing command: reserve person9 A 109
+Reservation successful.
+Table 109 A: person9
+
+>> Executing command: reserve sectionFull A
+Reservation successful.
+Table 101 A: sectionFull
+
+>> Executing command: status
+
+----- Section A -----
+Table 100 -- personRand
+Table 101 -- sectionFull
+Table 102 -- personA2
+Table 103 -- personA3
+Table 104 -- personA4
+Table 105 -- tableTaken
+Table 106 -- personA6
+Table 107 -- personA7
+Table 108 -- personA8
+Table 109 -- person9
+
+----- Section B -----
+Table 200 -- FamB0
+Table 201 --
+Table 202 --
+Table 203 --
+Table 204 --
+Table 205 --
+Table 206 -- HamB6
+Table 207 --
+Table 208 --
+Table 209 --
+
+>>
+>> Executing command: exit

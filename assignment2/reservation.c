@@ -59,7 +59,7 @@ void initTables(struct table *base) {
     printf("Initialization successful.\n");
 
     // Perform a random sleep
-    // sleep(rand() % 15);
+    sleep(rand() % 5);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -95,7 +95,7 @@ void printTableInfo(struct table *base) {
     }
 
     // Perform a random sleep
-    // sleep(rand() % 15);
+    sleep(rand() % 5);
 
     // Release the mutexes using sem_post
     sem_post(mutexA);
@@ -127,13 +127,13 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
                 strcpy((base+i)->name, name_hld);
                 strcpy((base+i)->status, "Reserved");
                 printf("Reservation successful.\n");
-                printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
+                printf("Table %d A: %s\n", (base+i)->num, (base+i)->name);
             } else {
-                printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
+                printf("Reservation failed: Table %d A already reserved by %s.\n", table_num, (base+i)->name);
             }
 
             // Perform a random sleep
-            // sleep(rand() % 15);
+            sleep(rand() % 5);
 
             // Release mutex
             sem_post(mutexA);
@@ -157,13 +157,13 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
                 strcpy((base+i)->name, name_hld);
                 strcpy((base+i)->status, "Reserved");
                 printf("Reservation successful.\n");
-                printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
+                printf("Table %d B: %s\n", (base+i)->num, (base+i)->name);
             } else {
-                printf("Reservation failed: Table %d %s is already reserved.\n", table_num, section);
+                printf("Reservation failed: Table %d B already reserved by %s.\n", table_num, (base+i)->name);
             }
 
             // Perform a random sleep
-            // sleep(rand() % 15);
+            sleep(rand() % 5);
 
             // Release mutex
             sem_post(mutexB);
@@ -177,8 +177,6 @@ void reserveSpecificTable(struct table *base, char *name_hld, char *section, int
 
 
 void reserveRandomTable(struct table *base, char *name_hld, char *section) {
-    int reserved;
-
     switch (section[0]) {
         case 'a':
         case 'A':
@@ -186,25 +184,22 @@ void reserveRandomTable(struct table *base, char *name_hld, char *section) {
             sem_wait(mutexA);
 
             // Look for empty table and reserve it ie copy name to that struct
-            reserved = 0;
             for (int i = 0; i < 10; i++) {
                 if (strcmp((base+i)->status, "Free") == 0) {
                     strcpy((base+i)->name, name_hld);
                     strcpy((base+i)->status, "Reserved");
 
                     printf("Reservation successful.\n");
-                    printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
-                    reserved = 1;
+                    printf("Table %d A: %s\n", (base+i)->num, (base+i)->name);
                     sem_post(mutexA);
                     return;
                 }
             }
 
-            if (reserved == 0)
-                printf("Reservation failed: All tables are already reserved.\n");
+            printf("Reservation failed: All tables are already reserved.\n");
 
             // Perform a random sleep
-            // sleep(rand() % 15);
+            sleep(rand() % 5);
 
             // Release mutex for section A
             sem_post(mutexA);
@@ -215,25 +210,22 @@ void reserveRandomTable(struct table *base, char *name_hld, char *section) {
             sem_wait(mutexB);
 
             // Look for empty table and reserve it ie copy name to that struct
-            reserved = 0;
             for (int i = 10; i < 20; i++) {
                 if (strcmp((base+i)->status, "Free") == 0) {
                     strcpy((base+i)->name, name_hld);
                     strcpy((base+i)->status, "Reserved");
 
                     printf("Reservation successful.\n");
-                    printf("Table %d %s: %s\n", (base+i)->num, section, (base+i)->name);
-                    reserved = 1;
+                    printf("Table %d B: %s\n", (base+i)->num, (base+i)->name);
                     sem_post(mutexB);
                     return;
                 }
             }
 
-            if (reserved == 0)
-                printf("Reservation failed: All tables are already reserved.\n");
+            printf("Reservation failed: All tables are already reserved.\n");
 
             // Perform a random sleep
-            // sleep(rand() % 15);
+            sleep(rand() % 5);
 
             // Release mutex for section B
             sem_post(mutexB);
@@ -280,7 +272,6 @@ int processCmd(char *cmd, struct table *base) {
             else
                 reserveRandomTable(base, name_hld, section);
 
-            sleep(rand() % 15);
             break;
         case 's':
         case 'S':

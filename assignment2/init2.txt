@@ -1,0 +1,31 @@
+init
+reserve personB0 B
+reserve personB1 B
+reserve personB2 B
+reserve personB3 B
+status
+reserve personB4 B
+reserve personB5 B
+status
+reserve invalidNum A ###
+reserve invalidNum A 111
+reserve invalidSection C
+reserve invalidSection AA 100
+reserve personA1 A 101
+reserve personRand A
+status
+
+reserve personA2 A 102
+reserve personA3 A 103
+reserve personA4 A 104
+reserve personRand A
+reserve tableTaken A 105
+reserve personA6 A 106
+reserve personA7 A 107
+reserve personA8 A 108
+reserve tableTaken A 108
+reserve person9 A 109
+reserve sectionFull A
+status
+
+exit
