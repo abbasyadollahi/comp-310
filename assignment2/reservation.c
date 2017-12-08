@@ -308,6 +308,19 @@ int main(int argc, char *argv[]) {
 
     signal(SIGINT, ctrlCHandler);
 
+
+    char *name1 = "somefiletxt";
+    char *ext = strdup(name1);
+    char *file = strsep(&ext, ".");
+    printf("%s, %s\n", file, ext);
+    if (strlen(file) > 2)
+        printf("YAY");
+    if (strlen(ext) > 2)
+        printf("WOO");
+
+
+
+
     // File name is specifed
     if (argc > 1) {
         // Perform stdin rewiring if input file exists
